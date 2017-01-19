@@ -4,6 +4,7 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -15,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private double valTwo;
     private boolean doubleFlag = false;
     private char operator;
-    private String hiddenValOne, hiddenValTwo;
+    private String prefixNum = "";
     private String lastFunction;
 
     // Define the variable and gets textview 1
@@ -117,12 +118,12 @@ public class MainActivity extends AppCompatActivity {
     public void setNum(int num) {
         String temp = getNum();
         if(temp.equals("0") && num != 0 || lastFunction.equals("setOperator")) {
-            displayView.setText(Integer.toString(num));
+            displayView.setText(prefixNum + Integer.toString(num));
 
         }else if(temp.equals("0") && num == 0) {
-            displayView.setText("0");
+            displayView.setText(prefixNum + "0");
         }else {
-            displayView.setText(temp + num);
+            displayView.setText(prefixNum + temp + num);
         }
 
         lastFunction = "setNum";
@@ -130,6 +131,12 @@ public class MainActivity extends AppCompatActivity {
 
     public String getNum() {
         String displayNum = displayView.getText().toString();
+        System.out.println("displayView:"+displayNum);
+        if(!prefixNum.equals("")) {
+            //displayNum = displayNum.substring(displayNum.indexOf(prefixNum), displayNum.length());
+            System.out.println(displayNum.indexOf(prefixNum));
+        }
+        System.out.println("replaced: "+displayNum);
         return displayNum;
     }
 
@@ -149,19 +156,31 @@ public class MainActivity extends AppCompatActivity {
         doubleFlag = false;
         valOne = Double.NaN;
         valTwo = Double.NaN;
+        prefixNum = "";
 
         lastFunction = "clearNum";
     }
 
     public void setOperator(char operator) {
-        this.operator = operator;
+        boolean sameOperator = false;
+
+        if(this.operator == operator) {
+            sameOperator = true;
+        }else {
+            this.operator = operator;
+        }
+
         //String temp = getNum();
         //displayView.setText(temp +" "+ Character.toString(this.operator) +" ");
-        System.out.println(valOne);
+        System.out.println("setOp Works");
+        System.out.println("valOne: "+valOne);
         if(Double.isNaN(valOne)) {
             valOne = Double.parseDouble(getNum());
-        }else {
+            prefixNum = getNum() +" "+ Character.toString(this.operator)+ " ";
+        }else if(sameOperator) {
             calc();
+        }else {
+
         }
         doubleFlag = false;
         //displayView.setText("0");
@@ -183,9 +202,10 @@ public class MainActivity extends AppCompatActivity {
             }else if(operator == '/') {
                 answer = valOne / valTwo;
             }
-            System.out.println(answer);
+            System.out.println("Answer:"+answer);
             answerView.setText(decimalFormat.format(answer));
             valOne = answer;
+            prefixNum = prefixNum + getNum();
         }
 
         lastFunction = "calc";
@@ -194,5 +214,13 @@ public class MainActivity extends AppCompatActivity {
     public String lastAction() {
         return lastFunction;
     }
+
+//    public void testClick(View view) {
+//        Button number = (Button)view;
+//        switch (number.getText().toString()) {
+//            case "+":
+//                valOne = Double.parseDouble(displayView.getText().toString());
+//        }
+//    }
 
 }
