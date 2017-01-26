@@ -118,12 +118,15 @@ public class MainActivity extends AppCompatActivity {
     public void setNum(int num) {
         String temp = getNum();
         if(temp.equals("0") && num != 0 || lastFunction.equals("setOperator")) {
-            displayView.setText(prefixNum + Integer.toString(num));
+            //displayView.setText(prefixNum + Integer.toString(num));
+            displayView.setText(Integer.toString(num));
 
         }else if(temp.equals("0") && num == 0) {
-            displayView.setText(prefixNum + "0");
+            //displayView.setText(prefixNum + "0");
+            displayView.setText("0");
         }else {
-            displayView.setText(prefixNum + temp + num);
+            //displayView.setText(prefixNum + temp + num);
+            displayView.setText(temp + num);
         }
 
         lastFunction = "setNum";
@@ -131,12 +134,12 @@ public class MainActivity extends AppCompatActivity {
 
     public String getNum() {
         String displayNum = displayView.getText().toString();
-        System.out.println("displayView:"+displayNum);
-        if(!prefixNum.equals("")) {
-            //displayNum = displayNum.substring(displayNum.indexOf(prefixNum), displayNum.length());
-            System.out.println(displayNum.indexOf(prefixNum));
-        }
-        System.out.println("replaced: "+displayNum);
+//        System.out.println("displayView:"+displayNum);
+//        if(!prefixNum.equals("")) {
+//            //displayNum = displayNum.substring(displayNum.indexOf(prefixNum), displayNum.length());
+//            System.out.println(displayNum.indexOf(prefixNum));
+//        }
+//        System.out.println("replaced: "+displayNum);
         return displayNum;
     }
 
@@ -172,11 +175,11 @@ public class MainActivity extends AppCompatActivity {
 
         //String temp = getNum();
         //displayView.setText(temp +" "+ Character.toString(this.operator) +" ");
-        System.out.println("setOp Works");
-        System.out.println("valOne: "+valOne);
+        //System.out.println("setOp Works");
+        //System.out.println("valOne: "+valOne);
         if(Double.isNaN(valOne)) {
             valOne = Double.parseDouble(getNum());
-            prefixNum = getNum() +" "+ Character.toString(this.operator)+ " ";
+            //prefixNum = getNum() +" "+ Character.toString(this.operator)+ " ";
         }else if(sameOperator) {
             calc();
         }else {
@@ -202,10 +205,11 @@ public class MainActivity extends AppCompatActivity {
             }else if(operator == '/') {
                 answer = valOne / valTwo;
             }
-            System.out.println("Answer:"+answer);
+            //System.out.println("Answer:"+answer);
             answerView.setText(decimalFormat.format(answer));
             valOne = answer;
-            prefixNum = prefixNum + getNum();
+            //operator should be null or empty...
+            //prefixNum = prefixNum + getNum();
         }
 
         lastFunction = "calc";
