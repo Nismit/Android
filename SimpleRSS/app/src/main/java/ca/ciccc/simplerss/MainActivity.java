@@ -2,16 +2,21 @@ package ca.ciccc.simplerss;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-
+        // Make a data instance in an array
         feedDataModels.add(new RssFeedDataModel("placeholder", "Title Title", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis odio ut metus auctor varius. Phasellus cursus mattis elit, et accumsan metus tempor eget.", "www.google.com", "2017/01/27"));
         feedDataModels.add(new RssFeedDataModel("placeholder", "Title Title", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis odio ut metus auctor varius.", "www.google.com", "2017/01/27"));
         feedDataModels.add(new RssFeedDataModel("placeholder", "Title Title", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis odio ut metus auctor varius.", "www.google.com", "2017/01/27"));
@@ -42,17 +45,11 @@ public class MainActivity extends AppCompatActivity {
         feedDataModels.add(new RssFeedDataModel("placeholder", "Title Title", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis odio ut metus auctor varius.", "www.google.com", "2017/01/27"));
         feedDataModels.add(new RssFeedDataModel("placeholder", "Title Title", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis odio ut metus auctor varius.", "www.google.com", "2017/01/27"));
 
-
-
-//        adapter = new mAdapter(
-//                this,
-//                android.R.layout.simple_list_item_2,
-//                android.R.id.text1,
-//                feedDataModels
-//        );
-
+        // Define a variable to layout
         listView = (ListView)findViewById(R.id.rssView);
+        // Make a instance for an adapter
         ArrayAdapter<RssFeedDataModel> adapter = new customAdapter(this, 0, feedDataModels);
+        // Set the adapter to the variable
         listView.setAdapter(adapter);
 
 
@@ -115,9 +112,28 @@ public class MainActivity extends AppCompatActivity {
             int imageID = context.getResources().getIdentifier(dataProperty.getThumbnail(), "drawable", context.getPackageName());
             image.setImageResource(imageID);
 
-
             return view;
         }
-
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add:
+                //Toast.makeText(this,"Settings working", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, AddRssFeed.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+
 }
