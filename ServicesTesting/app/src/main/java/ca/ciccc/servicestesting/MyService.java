@@ -29,7 +29,8 @@ public class MyService extends Service {
         notification.setContentText("This is a body text");
         notification.setSmallIcon(R.mipmap.ic_launcher);
         notification.setAutoCancel(true);
-        notification.setDefaults(Notification.DEFAULT_ALL);
+        //notification.setDefaults(Notification.DEFAULT_ALL);
+        notification.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
 
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

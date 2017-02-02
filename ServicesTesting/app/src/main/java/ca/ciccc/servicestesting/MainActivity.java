@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startTestService() {
-        startService(new Intent(this, MyService.class));
-        //Intent intent = new Intent(this, MyIntentService.class);
-        //intent.setAction("testing");
-        //intent.putExtra("action", "testing");
-        //startService(intent);
+        //startService(new Intent(this, MyService.class));
+        Intent intent = new Intent(this, MyIntentService.class);
+        intent.setAction("testing");
+        intent.putExtra("action", "testing");
+        startService(intent);
     }
 
     public void stopTestService() {

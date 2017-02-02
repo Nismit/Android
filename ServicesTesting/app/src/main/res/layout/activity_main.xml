@@ -19,5 +19,5 @@
         android:id="@+id/toggleButton"
         android:textOff="Service Started"
         android:textOn="Service Killed"
-        android:checked="false" />
+        android:checked="true" />
 </RelativeLayout>
