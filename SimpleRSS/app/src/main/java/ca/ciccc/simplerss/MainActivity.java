@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Custom ArrayList
     ArrayList<RssFeedDataModel> feedDataModels = new ArrayList<>();
-    //View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +80,6 @@ public class MainActivity extends AppCompatActivity {
             // adapter.notifyDataChanged()
 
             RssFeedDataModel dataProperty = feedDataModelList.get(position);
-
-            System.out.println("Working");
-            System.out.println(dataProperty.getTitle());
 
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
