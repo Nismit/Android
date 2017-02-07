@@ -5,62 +5,61 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+
+import ca.ciccc.simplerss.net.HttpClient;
+import ca.ciccc.simplerss.rss.AtomFeedParser;
 
 public class AddRssFeed extends AppCompatActivity {
-    public static final String TAG = "AddRssFeed";
+    // For Debug
+    private static final String TAG = "RSS-AddRssFeed";
+
+    HttpClient client = new HttpClient();
     EditText urlText;
+    TextView fetchResultView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_rss_feed);
+        fetchResultView = (TextView) findViewById(R.id.fetchResultView);
     }
 
     public void fetchData(View v) {
-        //http://android-developers.blogspot.com/atom.xml
-        //AtomFeedParser feed = new AtomFeedParser();
-        parseURL();
+        Log.d(TAG, "Execute fetch data");
+        client.addObserver(observer);
+        client.openConnection("http://android-developers.blogspot.com/atom.xml");
+        Log.d(TAG, "Another thread working for getting connection");
     }
 
-    private void parseURL() {
-        urlText = (EditText) findViewById(R.id.urlText);
+    private void setResultView(ArrayList<?> rssFeeds) {
+        AtomFeedParser.Entry entry = (AtomFeedParser.Entry) rssFeeds.get(0);
+        fetchResultView.setText("ID: "+ entry.id + "\nTitle: "+ entry.title);
+    }
 
-        try {
-            String result = urlText.getText().toString();
-            URL url = new URL(result);
-            InputStream stream = null;
-
-            try {
-                stream = downloadURL(url);
-                System.out.println(stream);
-            }finally {
-                stream.close();
+    private Observer observer = new Observer() {
+        @Override
+        public void update(Observable o, Object arg) {
+            if(!(arg instanceof HttpClient.Event)) {
+                return;
             }
-        }catch (MalformedURLException e) {
-            Log.e(TAG, "Feed URL is malformed", e);
-            return;
-        }catch (IOException e) {
-            Log.e(TAG, "Error reading from network: " + e.toString());
-            return;
+
+            switch ((HttpClient.Event)arg) {
+                case CONNECT:
+                    // Progress
+                    Log.d(TAG, "Observer starts connection http");
+                    break;
+                case FINISH:
+                    // Done
+                    Log.d(TAG, "Observer ends");
+                    setResultView(client.getRssFeeds());
+                    break;
+
+            }
         }
-
-
-    }
-
-    private InputStream downloadURL(URL url) throws IOException {
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setReadTimeout(15000 /* milliseconds */);
-        conn.setConnectTimeout(10000 /* milliseconds */);
-        conn.setRequestMethod("GET");
-        conn.setDoInput(true);
-        // Starts the query
-        conn.connect();
-        return conn.getInputStream();
-    }
+    };
 }

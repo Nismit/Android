@@ -55,8 +55,6 @@ public class AtomFeedParser {
         return entries;
     }
 
-
-
     private Entry readEntry(XmlPullParser parser) throws XmlPullParserException, IOException, ParseException {
         parser.require(XmlPullParser.START_TAG, ns, "entry");
         String id = null;
@@ -111,8 +109,7 @@ public class AtomFeedParser {
         }
     }
 
-    private String readBasicTag(XmlPullParser parser, String tag)
-            throws IOException, XmlPullParserException {
+    private String readBasicTag(XmlPullParser parser, String tag) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, tag);
         String result = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, tag);
@@ -164,5 +161,4 @@ public class AtomFeedParser {
             this.published = published;
         }
     }
-
 }

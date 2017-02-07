@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    // For Debug
+    private static final String TAG = "RSS-MainActivity";
 
     // Variables
     ListView listView;
