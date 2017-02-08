@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -37,8 +38,15 @@ public class AddRssFeed extends AppCompatActivity {
     }
 
     private void setResultView(ArrayList<?> rssFeeds) {
-        AtomFeedParser.Entry entry = (AtomFeedParser.Entry) rssFeeds.get(0);
-        fetchResultView.setText("ID: "+ entry.id + "\nTitle: "+ entry.title);
+        int size = rssFeeds.size();
+
+        HashMap<String, AtomFeedParser.Entry> entryHashMap = new HashMap<String, AtomFeedParser.Entry>();
+        for(int i = 0; i < size; i++) {
+            AtomFeedParser.Entry e = (AtomFeedParser.Entry) rssFeeds.get(i);
+            entryHashMap.put(e.id, e);
+            Log.d(TAG, "TITLE:" + entryHashMap.get(e.id).title);
+        }
+        //fetchResultView.setText("ID: "+ entry.id + "\nTitle: "+ entry.title);
     }
 
     private Observer observer = new Observer() {
