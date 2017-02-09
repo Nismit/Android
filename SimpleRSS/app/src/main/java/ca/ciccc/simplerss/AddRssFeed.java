@@ -43,12 +43,18 @@ public class AddRssFeed extends AppCompatActivity {
         HashMap<String, AtomFeedParser.Entry> entryHashMap = new HashMap<String, AtomFeedParser.Entry>();
         for(int i = 0; i < size; i++) {
             AtomFeedParser.Entry e = (AtomFeedParser.Entry) rssFeeds.get(i);
-            entryHashMap.put(e.id, e);
-            Log.d(TAG, "TITLE:" + entryHashMap.get(e.id).title);
+            //entryHashMap.put(e.id, e);
+            entryHashMap.put(Integer.toString(i), e);
+            Log.d(TAG, "TITLE:" + entryHashMap.get(Integer.toString(i)).title);
         }
         //fetchResultView.setText("ID: "+ entry.id + "\nTitle: "+ entry.title);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("HashMap", entryHashMap);
+
         Log.d(TAG, "Creating fragment");
         FeedListView fragment = new FeedListView();
+        fragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragmentPreview, fragment);
         fragmentTransaction.commit();

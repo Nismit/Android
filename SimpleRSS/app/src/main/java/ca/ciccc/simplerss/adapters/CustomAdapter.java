@@ -15,7 +15,6 @@ import ca.ciccc.simplerss.R;
 import ca.ciccc.simplerss.RssFeedDataModel;
 
 public class CustomAdapter extends ArrayAdapter<RssFeedDataModel> {
-    private int mResource;
     private Context context;
     private List<RssFeedDataModel> feedDataModelList;
     private LayoutInflater mInflater;
@@ -23,7 +22,6 @@ public class CustomAdapter extends ArrayAdapter<RssFeedDataModel> {
     public CustomAdapter(Context context, int resource, List<RssFeedDataModel> objects) {
         super(context, resource, objects);
 
-        mResource = resource;
         this.context = context;
         feedDataModelList = objects;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
