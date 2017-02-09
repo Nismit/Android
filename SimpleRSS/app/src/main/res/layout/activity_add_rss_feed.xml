@@ -41,15 +41,12 @@
         android:layout_alignParentStart="true"
         android:onClick="fetchData" />
 
-    <TextView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/button2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp"
-        android:id="@+id/fetchResultView"
-        android:textSize="16sp"
-        tools:text="Title: " />
+        android:layout_marginTop="17dp"
+        android:id="@+id/fragmentPreview"></LinearLayout>
 
 </RelativeLayout>

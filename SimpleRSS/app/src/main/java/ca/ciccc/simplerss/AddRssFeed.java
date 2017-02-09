@@ -1,5 +1,6 @@
 package ca.ciccc.simplerss;
 
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+import ca.ciccc.simplerss.fragments.FeedListView;
 import ca.ciccc.simplerss.net.HttpClient;
 import ca.ciccc.simplerss.rss.AtomFeedParser;
 
@@ -21,13 +23,11 @@ public class AddRssFeed extends AppCompatActivity {
 
     HttpClient client = new HttpClient();
     EditText urlText;
-    TextView fetchResultView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_rss_feed);
-        fetchResultView = (TextView) findViewById(R.id.fetchResultView);
     }
 
     public void fetchData(View v) {
@@ -47,6 +47,11 @@ public class AddRssFeed extends AppCompatActivity {
             Log.d(TAG, "TITLE:" + entryHashMap.get(e.id).title);
         }
         //fetchResultView.setText("ID: "+ entry.id + "\nTitle: "+ entry.title);
+        Log.d(TAG, "Creating fragment");
+        FeedListView fragment = new FeedListView();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragmentPreview, fragment);
+        fragmentTransaction.commit();
     }
 
     private Observer observer = new Observer() {
