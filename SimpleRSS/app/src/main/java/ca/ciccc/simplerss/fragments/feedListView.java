@@ -44,6 +44,8 @@ public class FeedListView extends ListFragment {
                 //strip = strip.replaceAll("&.*?;", "");
                 strip = strip.replaceAll("[ \\t\\r\\n]+"," ");
                 entry.setContent(strip);
+                //Log.d(TAG, "Link:" + entry.getLink());
+                //Log.d(TAG, "Time: "+ entry.getPublished());
                 feedDataModels.add(new RssFeedDataModel("placeholder", entry.getTitle(), entry.getContent(), entry.getLink(), "2017/01/27"));
             }
         }

@@ -20,6 +20,8 @@ public class BackgroundTask extends Observable {
     // For Debug
     private static final String TAG = "BackgroundTask";
 
+    private static final int READ_TIMEOUT_MS = 15000; // Mili Sec = 15 Sec
+    private static final int CONNECTION_TIMEOUT_MS = 10000; // Mili Sec = 10 Sec
     private String url;
     ArrayList<?> rssFeeds;
 
@@ -138,8 +140,8 @@ public class BackgroundTask extends Observable {
 
     private InputStream getHTTPStream(final URL urlAddress) throws IOException {
         HttpURLConnection conn = (HttpURLConnection) urlAddress.openConnection();
-        conn.setReadTimeout(15000);
-        conn.setConnectTimeout(10000);
+        conn.setReadTimeout(READ_TIMEOUT_MS);
+        conn.setConnectTimeout(CONNECTION_TIMEOUT_MS);
         conn.setRequestMethod("GET");
         conn.setDoInput(true);
         conn.connect();

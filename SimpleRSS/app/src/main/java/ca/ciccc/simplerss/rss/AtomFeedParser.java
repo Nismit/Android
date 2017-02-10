@@ -1,6 +1,7 @@
 package ca.ciccc.simplerss.rss;
 
 
+import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AtomFeedParser {
+    // For Debug
+    private static final String TAG = "AtomFeedParser";
 
     private static final int TAG_ID = 1;
     private static final int TAG_TITLE = 2;
@@ -85,6 +88,11 @@ public class AtomFeedParser {
                 link = readTag(parser, "link", TAG_LINK);
             }else if(name.equals("thumbnail")) {
                 thumbnail = readTag(parser, "thumbnail", TAG_THUMBNAIL);
+            }else if(name.equals("published")) {
+                String tempTime = readTag(parser, "published", TAG_PUBLISHED);
+                Log.d(TAG, "temp time: " + tempTime);
+                //Log.d(TAG, "Parse Long time:" + Long.parseLong(tempTime));
+                //publishedOn = Long.parseLong(tempTime);
             }else {
                 skip(parser);
             }
@@ -105,7 +113,7 @@ public class AtomFeedParser {
             case TAG_CONTENT:
                 return readBasicTag(parser, tagName);
             case TAG_LINK:
-                return readBasicTag(parser, tagName);
+                return readLink(parser);
             case TAG_THUMBNAIL:
                 return readBasicTag(parser, tagName);
             case TAG_PUBLISHED:
@@ -131,6 +139,23 @@ public class AtomFeedParser {
         return result;
     }
 
+    private String readLink(XmlPullParser parser) throws XmlPullParserException, IOException {
+        String link = null;
+        parser.require(XmlPullParser.START_TAG, ns, "link");
+        String tag = parser.getName();
+        String type = parser.getAttributeValue(null, "rel");
+        if(type.equals("alternate")) {
+            link = parser.getAttributeValue(null, "href");
+        }
+
+        while (true) {
+            if(parser.nextTag() == XmlPullParser.END_TAG) {
+                break;
+            }
+        }
+
+        return link;
+    }
 
     private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
         if(parser.getEventType() != XmlPullParser.START_TAG) {

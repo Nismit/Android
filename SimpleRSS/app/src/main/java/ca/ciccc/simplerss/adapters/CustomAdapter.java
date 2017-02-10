@@ -56,7 +56,15 @@ public class CustomAdapter extends ArrayAdapter<RssFeedDataModel> {
             title.setText(dataProperty.getTitle());
         }
 
-        url.setText(dataProperty.getUrl());
+        // Link Trim
+        int linkLength = dataProperty.getUrl().length();
+        if(linkLength >= 20){
+            String linkTrim = dataProperty.getUrl().substring(0, 20) + "...";
+            url.setText(linkTrim);
+        }else{
+            url.setText(dataProperty.getUrl());
+        }
+
         date.setText(dataProperty.getDate());
 
         // Desc Trim
