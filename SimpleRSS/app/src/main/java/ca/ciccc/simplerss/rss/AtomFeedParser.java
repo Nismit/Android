@@ -17,9 +17,10 @@ public class AtomFeedParser {
     private static final int TAG_ID = 1;
     private static final int TAG_TITLE = 2;
     private static final int TAG_SUMMARY = 3;
-    private static final int TAG_LINK = 4;
-    private static final int TAG_THUMBNAIL = 5;
-    private static final int TAG_PUBLISHED = 6;
+    private static final int TAG_CONTENT = 4;
+    private static final int TAG_LINK = 5;
+    private static final int TAG_THUMBNAIL = 6;
+    private static final int TAG_PUBLISHED = 7;
     private static final String ns = null;
 
     public List parse(InputStream in) throws XmlPullParserException, IOException, ParseException {
@@ -55,11 +56,12 @@ public class AtomFeedParser {
         return entries;
     }
 
-    private Entry readEntry(XmlPullParser parser) throws XmlPullParserException, IOException, ParseException {
+    private RssFeed readEntry(XmlPullParser parser) throws XmlPullParserException, IOException, ParseException {
         parser.require(XmlPullParser.START_TAG, ns, "entry");
         String id = null;
         String title = null;
         String summary = null;
+        String content = null;
         String link = null;
         String thumbnail = null;
         long publishedOn = 0;
@@ -77,6 +79,8 @@ public class AtomFeedParser {
                 title = readTag(parser, "title", TAG_TITLE);
             }else if(name.equals("summary")) {
                 summary = readTag(parser, "summary", TAG_SUMMARY);
+            }else if(name.equals("content")) {
+                content = readTag(parser, "content", TAG_CONTENT);
             }else if(name.equals("link")) {
                 link = readTag(parser, "link", TAG_LINK);
             }else if(name.equals("thumbnail")) {
@@ -86,7 +90,7 @@ public class AtomFeedParser {
             }
         }
 
-        return new Entry(id, title, summary, link, thumbnail, publishedOn);
+        return new RssFeed(id, title, summary, content, link, thumbnail, publishedOn);
     }
 
     private String readTag(XmlPullParser parser, String tagName, int tagType) throws XmlPullParserException, IOException {
@@ -97,6 +101,8 @@ public class AtomFeedParser {
             case TAG_TITLE:
                 return readBasicTag(parser, tagName);
             case TAG_SUMMARY:
+                return readBasicTag(parser, tagName);
+            case TAG_CONTENT:
                 return readBasicTag(parser, tagName);
             case TAG_LINK:
                 return readBasicTag(parser, tagName);
@@ -141,24 +147,6 @@ public class AtomFeedParser {
                     depth++;
                     break;
             }
-        }
-    }
-
-    public static class Entry {
-        public final String id;
-        public final String title;
-        public final String link;
-        public final String summary;
-        public final String thumbnail;
-        public final long published;
-
-        Entry(String id, String title, String summary, String link, String thumbnail, long published) {
-            this.id = id;
-            this.title = title;
-            this.summary = summary;
-            this.link = link;
-            this.thumbnail = thumbnail;
-            this.published = published;
         }
     }
 }

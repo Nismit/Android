@@ -1,6 +1,5 @@
 package ca.ciccc.simplerss.net;
 
-
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -17,9 +16,9 @@ import java.util.Observable;
 
 import ca.ciccc.simplerss.rss.AtomFeedParser;
 
-public class HttpClient extends Observable {
+public class BackgroundTask extends Observable {
     // For Debug
-    private static final String TAG = "RSS-HttpClient";
+    private static final String TAG = "BackgroundTask";
 
     private String url;
     ArrayList<?> rssFeeds;
@@ -29,7 +28,7 @@ public class HttpClient extends Observable {
         CONNECT, FINISH,
     }
 
-    public void openConnection(String url) {
+    public void taskStart(String url) {
         setChanged();
         notifyObservers(Event.CONNECT);
         parseURL(url);

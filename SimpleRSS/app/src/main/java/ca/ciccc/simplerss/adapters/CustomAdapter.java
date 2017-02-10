@@ -32,8 +32,6 @@ public class CustomAdapter extends ArrayAdapter<RssFeedDataModel> {
     public View getView(int position, View convertView, ViewGroup parent) {
         RssFeedDataModel dataProperty = feedDataModelList.get(position);
 
-        //LayoutInflater inflater =
-
         View view;
 
         if(convertView == null) {
@@ -48,10 +46,20 @@ public class CustomAdapter extends ArrayAdapter<RssFeedDataModel> {
         TextView url = (TextView) view.findViewById(R.id.siteURL);
         TextView date = (TextView) view.findViewById(R.id.sitePublishDate);
 
-        title.setText(dataProperty.getTitle());
+
+        // Title Trim
+        int titleLength = dataProperty.getTitle().length();
+        if(titleLength >= 25){
+            String titleTrim = dataProperty.getTitle().substring(0, 25) + "...";
+            title.setText(titleTrim);
+        }else{
+            title.setText(dataProperty.getTitle());
+        }
+
         url.setText(dataProperty.getUrl());
         date.setText(dataProperty.getDate());
 
+        // Desc Trim
         int descriptionLength = dataProperty.getDescription().length();
         if(descriptionLength >= 85){
             String descriptionTrim = dataProperty.getDescription().substring(0, 85) + "...";

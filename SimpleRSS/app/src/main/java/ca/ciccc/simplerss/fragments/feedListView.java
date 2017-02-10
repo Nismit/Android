@@ -10,11 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import ca.ciccc.simplerss.RssFeedDataModel;
 import ca.ciccc.simplerss.adapters.CustomAdapter;
-import ca.ciccc.simplerss.rss.AtomFeedParser;
+import ca.ciccc.simplerss.rss.RssFeed;
 
 public class FeedListView extends ListFragment {
     // For Debug
@@ -38,12 +37,14 @@ public class FeedListView extends ListFragment {
 
         Bundle bundle = getArguments();
         if(bundle != null) {
-            HashMap hashMap = (HashMap) bundle.getSerializable("HashMap");
-            Log.d(TAG, "Get Hashmap from AddRssFeed");
-            //Log.d(TAG, "HashMap -> "+ hashMap.size());
-            for (int i = 0; i < hashMap.size(); i++) {
-                AtomFeedParser.Entry entry = (AtomFeedParser.Entry) hashMap.get(Integer.toString(i));
-                feedDataModels.add(new RssFeedDataModel("placeholder", entry.title, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis odio ut metus auctor varius.", "www.google.com", "2017/01/27"));
+            ArrayList<?> entries = bundle.getParcelableArrayList("ArrayList");
+            for (int i = 0; i < entries.size(); i++) {
+                RssFeed entry = (RssFeed) entries.get(i);
+                String strip = entry.getContent().replaceAll("<[^>]*>", "");
+                //strip = strip.replaceAll("&.*?;", "");
+                strip = strip.replaceAll("[ \\t\\r\\n]+"," ");
+                entry.setContent(strip);
+                feedDataModels.add(new RssFeedDataModel("placeholder", entry.getTitle(), entry.getContent(), entry.getLink(), "2017/01/27"));
             }
         }
 
