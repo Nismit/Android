@@ -14,7 +14,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Observable;
 
-import ca.ciccc.simplerss.rss.AtomFeedParser;
+import ca.ciccc.simplerss.rss.FeedParser;
 
 public class BackgroundTask extends Observable {
     // For Debug
@@ -131,7 +131,7 @@ public class BackgroundTask extends Observable {
     }
 
     public ArrayList<?> updateRSSFeed(final InputStream stream) throws IOException, XmlPullParserException, ParseException {
-        final AtomFeedParser feedParser = new AtomFeedParser();
+        final FeedParser feedParser = new FeedParser();
         Log.d(TAG, "Parse Feed");
         final ArrayList<?> entries = (ArrayList<?>) feedParser.parse(stream);
 

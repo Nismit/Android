@@ -13,9 +13,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AtomFeedParser {
+public class FeedParser {
     // For Debug
-    private static final String TAG = "AtomFeedParser";
+    private static final String TAG = "FeedParser";
 
     private static final int TAG_ID = 1;
     private static final int TAG_TITLE = 2;
@@ -33,30 +33,53 @@ public class AtomFeedParser {
             parser.setInput(in, null);
             parser.nextTag();
             return reedFeed(parser);
-        }finally {
+        } finally {
             in.close();
         }
     }
 
-    private List reedFeed(XmlPullParser parser) throws XmlPullParserException, IOException, ParseException {
-        List entries = new ArrayList();
+    //
+    // Feed Type Check
+    //
 
-        parser.require(XmlPullParser.START_TAG, ns, "feed");
+    private String feedTypeChecker(XmlPullParser parser) throws XmlPullParserException, IOException {
+        String feedType = null;
+
+        try {
+            parser.require(XmlPullParser.START_TAG, ns, "feed");
+            feedType = "feed";
+            return feedType;
+        } catch (XmlPullParserException e) {
+            parser.require(XmlPullParser.START_TAG, ns, "rss");
+            feedType = "rss";
+            return feedType;
+        }
+    }
+
+    private List reedFeed(XmlPullParser parser) throws XmlPullParserException, IOException, ParseException {
+        List items = new ArrayList();
+
+        String feedType = feedTypeChecker(parser);
+        Log.d(TAG, "Feed Type: "+ feedType);
         while (parser.next() != XmlPullParser.END_TAG) {
-            if(parser.getEventType() != XmlPullParser.START_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
 
             String name = parser.getName();
 
-            if(name.equals("entry")) {
-                entries.add(readEntry(parser));
+            Log.d(TAG, "P NAME: "+ name);
+
+            if (feedType.equals("feed") && name.equals("entry")) {
+                items.add(readEntry(parser));
+            }else if (feedType.equals("rss") && name.equals("item")) {
+                items.add(readItem(parser));
             }else {
                 skip(parser);
             }
         }
 
-        return entries;
+        return items;
     }
 
     private RssFeed readEntry(XmlPullParser parser) throws XmlPullParserException, IOException, ParseException {
@@ -90,7 +113,49 @@ public class AtomFeedParser {
                 thumbnail = readTag(parser, "thumbnail", TAG_THUMBNAIL);
             }else if(name.equals("published")) {
                 String tempTime = readTag(parser, "published", TAG_PUBLISHED);
-                Log.d(TAG, "temp time: " + tempTime);
+                //Log.d(TAG, "temp time: " + tempTime);
+                //Log.d(TAG, "Parse Long time:" + Long.parseLong(tempTime));
+                //publishedOn = Long.parseLong(tempTime);
+            }else {
+                skip(parser);
+            }
+        }
+
+        return new RssFeed(id, title, summary, content, link, thumbnail, publishedOn);
+    }
+
+    private RssFeed readItem(XmlPullParser parser) throws XmlPullParserException, IOException, ParseException {
+        parser.require(XmlPullParser.START_TAG, ns, "item");
+        String id = null;
+        String title = null;
+        String summary = null;
+        String content = null;
+        String link = null;
+        String thumbnail = null;
+        long publishedOn = 0;
+
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if(parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+
+            String name = parser.getName();
+
+            if(name.equals("id")) {
+                id = readTag(parser, "id", TAG_ID);
+            }else if(name.equals("title")) {
+                title = readTag(parser, "title", TAG_TITLE);
+            }else if(name.equals("description")) {
+                summary = readTag(parser, "description", TAG_SUMMARY);
+            }else if(name.equals("content")) {
+                content = readTag(parser, "description", TAG_CONTENT);
+            }else if(name.equals("link")) {
+                link = readTag(parser, "link", TAG_LINK);
+            }else if(name.equals("thumbnail")) {
+                thumbnail = readTag(parser, "thumbnail", TAG_THUMBNAIL);
+            }else if(name.equals("pubDate")) {
+                String tempTime = readTag(parser, "pubDate", TAG_PUBLISHED);
+                //Log.d(TAG, "temp time: " + tempTime);
                 //Log.d(TAG, "Parse Long time:" + Long.parseLong(tempTime));
                 //publishedOn = Long.parseLong(tempTime);
             }else {
