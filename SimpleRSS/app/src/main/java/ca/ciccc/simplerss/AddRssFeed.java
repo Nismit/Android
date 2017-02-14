@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import ca.ciccc.simplerss.db.DataBaseHandler;
 import ca.ciccc.simplerss.fragments.FeedListView;
 import ca.ciccc.simplerss.net.BackgroundTask;
 
@@ -26,6 +27,12 @@ public class AddRssFeed extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_rss_feed);
+    }
+
+    public void addData(View v) {
+        //DataBaseHandler handler = new DataBaseHandler();
+        Log.d(TAG, "Adding the data to Database");
+        finish();
     }
 
     public void fetchData(View v) {

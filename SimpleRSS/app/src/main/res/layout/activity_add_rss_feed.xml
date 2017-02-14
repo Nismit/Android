@@ -29,7 +29,8 @@
         android:id="@+id/button"
         android:layout_below="@+id/urlText"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="addData" />
 
     <Button
         android:text="FETCH"
