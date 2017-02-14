@@ -9,17 +9,22 @@ import android.support.annotation.Nullable;
 @Table
 public class FeedStore {
 
-    @PrimaryKey
+    @PrimaryKey(autoincrement = true)
     public long id;
 
+    // Default: Web Site URL
     @Column(indexed = true)
     @Nullable
     public String title;
 
+    // URL
     @Column
     @Nullable
     public String url;
 
+    // Category
+    // It will be categorized by user
+    // But WIP..
     @Column
     public String category;
 

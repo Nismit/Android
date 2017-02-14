@@ -61,6 +61,8 @@ public class FeedParser {
 
         String feedType = feedTypeChecker(parser);
         Log.d(TAG, "Feed Type: "+ feedType);
+
+
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
@@ -68,11 +70,13 @@ public class FeedParser {
 
             String name = parser.getName();
 
-            Log.d(TAG, "P NAME: "+ name);
+            //Log.d(TAG, "P NAME: "+ name);
 
             if (feedType.equals("feed") && name.equals("entry")) {
                 items.add(readEntry(parser));
-            }else if (feedType.equals("rss") && name.equals("item")) {
+            }else if (feedType.equals("rss") && name.equals("channel")) {
+                // Nothing
+            }else if(feedType.equals("rss") && name.equals("item")) {
                 items.add(readItem(parser));
             }else {
                 skip(parser);
@@ -98,6 +102,8 @@ public class FeedParser {
             }
 
             String name = parser.getName();
+
+            //Log.d(TAG, "E NAME: "+ name);
 
             if(name.equals("id")) {
                 id = readTag(parser, "id", TAG_ID);
@@ -140,6 +146,7 @@ public class FeedParser {
             }
 
             String name = parser.getName();
+            Log.d(TAG, "I NAME: "+ name);
 
             if(name.equals("id")) {
                 id = readTag(parser, "id", TAG_ID);
@@ -149,15 +156,12 @@ public class FeedParser {
                 summary = readTag(parser, "description", TAG_SUMMARY);
             }else if(name.equals("content")) {
                 content = readTag(parser, "description", TAG_CONTENT);
-            }else if(name.equals("link")) {
-                link = readTag(parser, "link", TAG_LINK);
+//            }else if(name.equals("link")) {
+//                link = readTag(parser, "link", TAG_LINK);
             }else if(name.equals("thumbnail")) {
                 thumbnail = readTag(parser, "thumbnail", TAG_THUMBNAIL);
             }else if(name.equals("pubDate")) {
                 String tempTime = readTag(parser, "pubDate", TAG_PUBLISHED);
-                //Log.d(TAG, "temp time: " + tempTime);
-                //Log.d(TAG, "Parse Long time:" + Long.parseLong(tempTime));
-                //publishedOn = Long.parseLong(tempTime);
             }else {
                 skip(parser);
             }

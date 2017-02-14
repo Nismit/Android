@@ -9,9 +9,16 @@ import java.util.List;
 public class DataBaseHandler {
 
     OrmaDatabase orma;
+    FeedStore feedStore = new FeedStore();
 
     public DataBaseHandler(Context context) {
         orma = OrmaDatabase.builder(context).build();
+    }
+
+    //CRUD
+
+    public void insert() {
+        orma.insertIntoFeedStore(feedStore);
     }
 
     @NonNull
@@ -23,6 +30,12 @@ public class DataBaseHandler {
         return orma.relationOfFeedStore().updater()
                 .idEq(value.id)
                 .title(value.title)
+                .execute();
+    }
+
+    public void delete(final FeedStore value) {
+        orma.deleteFromFeedStore()
+                .idEq(value.id)
                 .execute();
     }
 }

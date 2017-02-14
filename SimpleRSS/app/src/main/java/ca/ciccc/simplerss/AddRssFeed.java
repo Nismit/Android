@@ -31,8 +31,8 @@ public class AddRssFeed extends AppCompatActivity {
     public void fetchData(View v) {
         Log.d(TAG, "Execute fetch data");
         task.addObserver(observer);
-        //task.taskStart("http://android-developers.blogspot.com/atom.xml");
-        task.taskStart("https://www.smashingmagazine.com/feed/");
+        task.taskStart("http://android-developers.blogspot.com/atom.xml");
+        //task.taskStart("https://www.smashingmagazine.com/feed/");
         Log.d(TAG, "Another thread working for getting connection");
     }
 
