@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import ca.ciccc.simplerss.db.DataBaseHandler;
 import ca.ciccc.simplerss.fragments.FeedListView;
 import ca.ciccc.simplerss.net.BackgroundTask;
 
@@ -32,6 +33,17 @@ public class MainActivity extends AppCompatActivity {
         //task.taskStart("http://android-developers.blogspot.com/atom.xml");
         //task.taskStart("https://www.smashingmagazine.com/feed/");
         //Log.d(TAG, "Another thread working for getting connection");
+
+        // TODO
+        // Create cache database
+        //
+        // Check database that it has cache
+        // if it has cache, read from cache. However, there's no cache, read database which contains URL data
+        // after that, fetch data from url
+
+        DataBaseHandler handler = new DataBaseHandler(this);
+
+        Log.d(TAG, "Database: "+ handler.findAll().get(0).url);
     }
 
     @Override

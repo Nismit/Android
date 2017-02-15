@@ -1,6 +1,7 @@
 package ca.ciccc.simplerss;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,9 +31,10 @@ public class AddRssFeed extends AppCompatActivity {
     }
 
     public void addData(View v) {
-        //DataBaseHandler handler = new DataBaseHandler();
+        DataBaseHandler handler = new DataBaseHandler(this);
+        handler.insert();
         Log.d(TAG, "Adding the data to Database");
-        finish();
+        //finish();
     }
 
     public void fetchData(View v) {

@@ -4,6 +4,7 @@ import com.github.gfx.android.orma.annotation.Column;
 import com.github.gfx.android.orma.annotation.PrimaryKey;
 import com.github.gfx.android.orma.annotation.Table;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 @Table
@@ -14,18 +15,19 @@ public class FeedStore {
 
     // Default: Web Site URL
     @Column(indexed = true)
-    @Nullable
+    @NonNull
     public String title;
 
     // URL
     @Column
-    @Nullable
+    @NonNull
     public String url;
 
     // Category
     // It will be categorized by user
     // But WIP..
     @Column
+    @Nullable
     public String category;
 
 }
